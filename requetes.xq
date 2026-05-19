@@ -3,13 +3,10 @@ let $doc := doc("club.xml")
 return
 <membres>
 {
-  (: Pour chaque membre du document :)
   for $m in $doc//membre
-    (: Jointure : retrouver la catégorie correspondant à categorieRef :)
     let $cat := $doc//categorie[@id = $m/@categorieRef]
   return
     <membre id="{$m/@id}">
-      (: Concaténation prénom + nom pour le nom complet :)
       <nomComplet>{ concat($m/prenom, ' ', $m/nom) }</nomComplet>
       <email>{ string($m/email) }</email>
       <categorie>{ string($cat/@libelle) }</categorie>
@@ -23,11 +20,8 @@ let $doc := doc("club.xml")
 return
 <concours>
 {
-  (: FLWOR avec tri par date :)
-  for $c in $doc//concours/concours
-    (: Jointure : récupérer la catégorie liée au concours :)
+for $c in $doc//concours/concours
     let $cat := $doc//categorie[@id = $c/@categorieRef]
-    (: Tri par date croissante (xs:date pour comparer correctement) :)
     order by xs:date($c/@date) ascending
   return
     <concours id="{$c/@id}">
@@ -45,20 +39,15 @@ let $doc := doc("club.xml")
 return
 <resultats>
 {
-  (: Boucle sur chaque concours :)
   for $c in $doc//concours/concours
-    (: Coefficient converti en décimal pour le calcul :)
     let $coef := xs:decimal($c/@coefficient)
   return
     <concours titre="{$c/titre}">
     {
-      (: Boucle sur chaque participant du concours :)
-      for $p in $c//participant
-        (: Récupération du membre via membreRef pour obtenir son nom :)
+        for $p in $c//participant
         let $m      := $doc//membre[@id = $p/@membreRef]
         let $compl  := xs:integer($p/complexite)
         let $temps  := xs:integer($p/tempsExecution)
-        (: Calcul du score et arrondi à 2 décimales :)
         let $score  := round(($compl + $temps) * $coef * 100) div 100
       return
         <participant>
@@ -80,19 +69,16 @@ return
 {
   for $c in $doc//concours/concours
     let $coef := xs:decimal($c/@coefficient)
-    (: Calcul du score de chaque participant :)
     let $scores :=
       for $p in $c//participant
         let $compl := xs:integer($p/complexite)
         let $temps := xs:integer($p/tempsExecution)
         let $score := round(($compl + $temps) * $coef * 100) div 100
       return $score
-    (: Score maximum du concours :)
     let $maxScore := max($scores)
   return
     <concours titre="{$c/titre}" date="{$c/@date}">
     {
-      (: Filtrer les participants dont le score = max (gère les ex-aequo) :)
       for $p in $c//participant
         let $m     := $doc//membre[@id = $p/@membreRef]
         let $compl := xs:integer($p/complexite)
@@ -113,9 +99,7 @@ return
 
 (: Q5 :)
 let $doc       := doc("club.xml")
-(: ← Modifier cette valeur pour filtrer une autre catégorie :)
 let $categorie := "Intelligence Artificielle"
-(: Retrouver l'id de la catégorie correspondant au libellé :)
 let $catId     := $doc//categorie[@libelle = $categorie]/@id
 return
 <membres categorie="{$categorie}">
