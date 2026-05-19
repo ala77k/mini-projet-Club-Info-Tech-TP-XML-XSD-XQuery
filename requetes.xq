@@ -1,15 +1,3 @@
-(: ═══════════════════════════════════════════════════════════
-   Fichier : requetes.xq
-   Projet  : Club Info_Tech — TP XML / XSD / XQuery
-   BaseX   : Exécuter chaque requête séparément dans BaseX GUI
-              ou en ligne de commande : basex requetes.xq
-   ═══════════════════════════════════════════════════════════ :)
-
-(: ──────────────────────────────────────────────────────────
-   Q1 — Liste complète des membres (1 pt)
-   Affiche : id, nom complet, email et libellé de la catégorie
-   ────────────────────────────────────────────────────────── :)
-
 (: Q1 :)
 let $doc := doc("club.xml")
 return
@@ -29,12 +17,6 @@ return
 }
 </membres>
 
-
-(: ──────────────────────────────────────────────────────────
-   Q2 — Liste des concours (1 pt)
-   Affiche : titre, date, coefficient, libellé catégorie
-   Triés par date croissante
-   ────────────────────────────────────────────────────────── :)
 
 (: Q2 :)
 let $doc := doc("club.xml")
@@ -57,12 +39,6 @@ return
 }
 </concours>
 
-
-(: ──────────────────────────────────────────────────────────
-   Q3 — Calcul des scores de chaque participant (2 pts)
-   Formule : score = (complexite + tempsExecution) × coefficient
-   Arrondi à 2 décimales
-   ────────────────────────────────────────────────────────── :)
 
 (: Q3 :)
 let $doc := doc("club.xml")
@@ -96,12 +72,6 @@ return
 }
 </resultats>
 
-
-(: ──────────────────────────────────────────────────────────
-   Q4 — Vainqueur de chaque concours (2 pts)
-   Participant ayant le score maximum.
-   En cas d'égalité, tous les ex-aequo sont affichés.
-   ────────────────────────────────────────────────────────── :)
 
 (: Q4 :)
 let $doc := doc("club.xml")
@@ -140,12 +110,6 @@ return
 }
 </vainqueurs>
 
-
-(: ──────────────────────────────────────────────────────────
-   Q5 — Membres d'une catégorie donnée (2 pts)
-   Variable $categorie : changer la valeur pour filtrer.
-   Tri alphabétique par nom, puis par prénom.
-   ────────────────────────────────────────────────────────── :)
 
 (: Q5 :)
 let $doc       := doc("club.xml")
